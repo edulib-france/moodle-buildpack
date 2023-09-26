@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -eu
+
+MOODLE_TAG=$(cat ./bin/version)
+MOODLE_DOWNLOADS="$1/downloads"
+MOODLE_MISC="$1/misc"
+MOODLE_ZIP="$MOODLE_DOWNLOADS/moodle.zip"
+MOODLE_URL="https://github.com/moodle/moodle/archive/refs/tags/v$MOODLE_TAG.zip"
+
+mkdir -p "$MOODLE_DOWNLOADS"
+
+echo -n "-----> Downloading Moodle... from $MOODLE_URL to $MOODLE_ZIP... "
+curl -s --retry 3 -o "$MOODLE_ZIP" -L "$MOODLE_URL"
+echo "done"
+
+echo -n "-----> Extracting ZIP... "
+unzip -q "$MOODLE_ZIP" -d "$MOODLE_DOWNLOADS"
+mv "$MOODLE_DOWNLOADS/moodle-$MOODLE_TAG"/* "$1"
+echo "done"
+
+echo -n "-----> Deleting downloads directory... "
+rm -rf "$MOODLE_DOWNLOADS"
+echo "done"

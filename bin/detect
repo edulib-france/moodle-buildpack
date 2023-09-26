@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Matomo"
+exit 0
